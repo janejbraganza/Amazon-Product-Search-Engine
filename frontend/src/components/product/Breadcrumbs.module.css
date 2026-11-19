@@ -1,0 +1,48 @@
+.nav {
+  min-width: 0;
+  font-size: var(--text-sm);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Separator drawn in CSS, so screen readers do not read it out. */
+.item + .item::before {
+  content: '/';
+  margin: 0 var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--color-link);
+}
+
+.current {
+  overflow: hidden;
+  max-width: 40ch;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 639px) {
+  .current {
+    max-width: 22ch;
+  }
+}

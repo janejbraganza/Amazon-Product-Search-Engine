@@ -1,0 +1,22 @@
+# Fallback for builds that use the repository root as context without their own
+# <Dockerfile>.dockerignore (the project's Dockerfiles in docker/ use allow-lists).
+.git
+**/.env
+**/.env.*
+!**/.env.example
+**/.venv
+**/venv
+**/node_modules
+**/dist
+**/coverage
+**/htmlcov
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.ruff_cache
+**/.coverage
+**/*.log
+data/
+benchmarks/results/
+.vscode/
+.idea/

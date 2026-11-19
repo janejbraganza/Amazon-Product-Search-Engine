@@ -1,0 +1,50 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Node / frontend ----
+node_modules/
+dist/
+coverage/
+*.log
+
+# ---- Test reports / browser automation output ----
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+junit*.xml
+
+# ---- Temporary files ----
+*.tmp
+*.temp
+tmp/
+
+# ---- Editors / OS ----
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Data (large raw datasets) ----
+data/*
+!data/.gitkeep
+
+# ---- Benchmarks (keep only the latest published results) ----
+benchmarks/results/*
+!benchmarks/results/latest/

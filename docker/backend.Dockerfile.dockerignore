@@ -1,0 +1,8 @@
+# Allow-list: only what the backend image needs is sent to the build.
+# (.env, .venv, tests, caches, data and benchmark results are therefore never included.)
+*
+!backend/requirements.txt
+!backend/app/
+!backend/scripts/
+**/__pycache__
+**/*.py[cod]

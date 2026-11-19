@@ -1,0 +1,121 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: var(--page-max-width);
+  min-height: var(--header-height);
+  margin: 0 auto;
+  padding: var(--space-2) var(--page-gutter);
+}
+
+.brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+}
+
+.logo {
+  color: var(--color-link);
+}
+
+.search {
+  flex: 1;
+  min-width: 0;
+  max-width: 720px;
+}
+
+.nav {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.navList {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+.navLink[aria-current='page'] {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  border-color: var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+/* Tablets and phones: logo + links + toggle on the first row, search full width below. */
+@media (max-width: 899px) {
+  .inner {
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+  }
+
+  .search {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    padding-bottom: var(--space-2);
+  }
+}
+
+/* Narrow phones: the logo alone (it keeps its accessible name "Product Search home"). */
+@media (max-width: 419px) {
+  .brandName {
+    display: none;
+  }
+
+  .navLink {
+    padding: 0 var(--space-2);
+  }
+}

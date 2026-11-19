@@ -1,0 +1,29 @@
+{
+  "timestamp_utc": "2026-11-13T22:03:18+00:00",
+  "os": "Windows-11-10.0.26200-SP0",
+  "cpu": "AMD Ryzen 5 5600H with Radeon Graphics",
+  "logical_cpus": 12,
+  "physical_cpus": 6,
+  "ram_gb": 7.3,
+  "python": "3.13.15",
+  "packages": {
+    "fastapi": "0.162.5",
+    "uvicorn": "0.54.0",
+    "starlette": "1.10.0",
+    "sqlalchemy": "2.1.8",
+    "psycopg": "3.3.9",
+    "redis": "8.1.0",
+    "httpx": "0.28.1",
+    "pydantic": "2.14.3"
+  },
+  "postgres": "postgres (PostgreSQL) 18.7",
+  "redis": "Redis server v=8.10.3",
+  "database": "127.0.0.1:5432/product_search",
+  "redis_bench_db": 15,
+  "settings": {
+    "search_cache_ttl_seconds": 300,
+    "redis_timeout_seconds": 0.25,
+    "redis_retry_cooldown_seconds": 30.0
+  },
+  "products_in_database": 10000
+}

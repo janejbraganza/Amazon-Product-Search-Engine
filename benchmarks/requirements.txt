@@ -1,0 +1,6 @@
+# Benchmark-only extras (not needed to run or test the application).
+# Install into the backend virtual environment:
+#   cd backend
+#   .\.venv\Scripts\python.exe -m pip install -r ..\benchmarks\requirements.txt
+matplotlib==3.10.7
+psutil==7.1.3

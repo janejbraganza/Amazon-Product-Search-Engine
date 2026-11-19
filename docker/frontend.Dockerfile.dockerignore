@@ -1,0 +1,13 @@
+# Allow-list: only what the frontend build needs is sent to the build.
+# (node_modules, dist, coverage, .env files and tests are therefore never included.)
+*
+!frontend/package.json
+!frontend/package-lock.json
+!frontend/index.html
+!frontend/vite.config.js
+!frontend/public/
+!frontend/src/
+frontend/src/test/
+frontend/src/**/*.test.js
+frontend/src/**/*.test.jsx
+!docker/nginx.conf

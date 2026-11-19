@@ -1,0 +1,8 @@
+# Keep LF line endings in the repository and in every checkout (Windows included), so
+# Prettier, Ruff, shell commands in Docker and CI all see the same files.
+* text=auto eol=lf
+
+# Binary files: never convert or diff as text.
+*.png binary
+*.jpg binary
+*.ico binary

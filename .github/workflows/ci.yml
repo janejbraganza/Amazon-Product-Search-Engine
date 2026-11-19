@@ -1,0 +1,114 @@
+# Continuous integration: lint, test and build. Nothing is published or deployed.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (Ruff + pytest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      # Throwaway databases that exist only for this CI run.
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: ci_user
+          POSTGRES_PASSWORD: ci_only_password # not a secret: CI-only container, never reused
+          POSTGRES_DB: product_search_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci_user -d product_search_ci"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      # The tests create and use "<database>_test" (product_search_ci_test) automatically.
+      DATABASE_URL: postgresql+psycopg://ci_user:ci_only_password@127.0.0.1:5432/product_search_ci
+      REDIS_URL: redis://127.0.0.1:6379/0
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements.txt
+            backend/requirements-dev.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Ruff (lint)
+        run: python -m ruff check .
+
+      - name: Ruff (format)
+        run: python -m ruff format --check .
+
+      - name: pytest with coverage
+        run: python -m pytest --cov=app --cov-report=term
+
+  frontend:
+    name: Frontend (ESLint + Prettier + Vitest + build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Prettier
+        run: npm run format:check
+
+      - name: Vitest with coverage
+        run: npm run test:coverage
+
+      - name: Production build
+        run: npm run build
+
+  docker:
+    name: Docker (Compose config + image builds)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Validate Compose file
+        run: docker compose --profile app config --quiet
+
+      - name: Build backend and frontend images (not pushed)
+        run: docker compose --profile app build

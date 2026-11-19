@@ -1,0 +1,111 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Phones and tablets: one column; filters open in a drawer (Filters button). */
+.layout {
+  display: grid;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.sidebar {
+  display: none;
+}
+
+.main {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  align-content: start;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.toolbar > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.filtersButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+}
+
+.badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--text-xs);
+}
+
+/* Desktop: filter sidebar on the left, results on the right. */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    display: block;
+    max-height: calc(100vh - var(--header-height) - var(--space-8));
+    overflow-y: auto;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .filtersButton {
+    display: none;
+  }
+}
+
+.sidebarTitle {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Previous results stay visible (dimmed) while the next page or option loads. */
+.refreshing {
+  opacity: 0.55;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}

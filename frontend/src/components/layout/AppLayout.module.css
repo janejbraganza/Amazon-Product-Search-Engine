@@ -1,0 +1,33 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--page-gutter) var(--space-12);
+  outline: none;
+}
+
+.skipLink {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-weight: var(--weight-semibold);
+}
+
+.skipLink:focus {
+  top: var(--space-2);
+}

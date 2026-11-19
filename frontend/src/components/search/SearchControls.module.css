@@ -1,0 +1,94 @@
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  font-size: var(--text-sm);
+}
+
+/* Segmented control built from real radio buttons (keyboard + screen-reader friendly). */
+.segmented {
+  display: inline-flex;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+}
+
+.option {
+  position: relative;
+  cursor: pointer;
+}
+
+.option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.option span {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.option input:checked + span {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.option input:focus-visible + span {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.select {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.select select {
+  min-height: var(--touch-target);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.selects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .selects {
+    margin-left: auto;
+  }
+}

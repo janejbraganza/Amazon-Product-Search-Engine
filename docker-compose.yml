@@ -1,0 +1,107 @@
+# Two ways to run the project (see "Running with Docker" in README.md):
+#
+#   docker compose up -d                          PostgreSQL + Redis only, for local
+#                                                 development (backend and Vite run on the host)
+#   docker compose --profile app up --build -d    the complete application at
+#                                                 http://localhost:8080
+#
+# Published ports are bound to 127.0.0.1, so they are only reachable from this computer.
+# Credentials come from environment variables or a root .env file (see .env.example);
+# the defaults below are for local development only.
+
+x-database-env: &database-env
+  POSTGRES_USER: ${POSTGRES_USER:-search_user}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_local_dev}
+  POSTGRES_DB: ${POSTGRES_DB:-product_search}
+
+# Settings shared by the backend and the seed job (same image).
+x-backend-env: &backend-env
+  APP_ENV: production
+  # Service names (postgres, redis) resolve on the Compose network.
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-search_user}:${POSTGRES_PASSWORD:-change_me_local_dev}@postgres:5432/${POSTGRES_DB:-product_search}
+  REDIS_URL: redis://redis:6379/0
+
+services:
+  # ---------------------------------------------------------------- always started
+  postgres:
+    image: postgres:18-alpine
+    container_name: pse-postgres
+    environment: *database-env
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    container_name: pse-redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ---------------------------------------------------------------- profile "app"
+  # One-shot job: creates the tables and loads the 10,000-product catalogue if it is not
+  # already there. Safe on every start (existing rows are never duplicated or changed).
+  seed:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    image: pse-backend:latest
+    container_name: pse-seed
+    command: ["python", "-m", "scripts.seed"]
+    environment: *backend-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  backend:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    image: pse-backend:latest
+    container_name: pse-backend
+    environment:
+      <<: *backend-env
+      SEARCH_INDEX_WARMUP: "true" # build the search index at start-up, not on 1st search
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully
+    # No published port: only nginx (frontend) talks to the API, over the Compose network.
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  frontend:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    image: pse-frontend:latest
+    container_name: pse-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    restart: unless-stopped
+
+volumes:
+  # PostgreSQL data: survives "docker compose down" and container rebuilds.
+  # Only "docker compose down -v" (or "docker volume rm") deletes it.
+  pgdata:

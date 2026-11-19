@@ -1,0 +1,183 @@
+/*
+ * Design tokens: every colour, space, size and radius used by the app.
+ * Components reference these variables only, so light/dark themes swap in one place.
+ * Text colours meet WCAG AA (4.5:1) on the surfaces they are used on, in both themes.
+ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --color-page: #f6f6f4;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f0efec;
+  --color-border: #e4e3df;
+  --color-border-strong: #8c8b85; /* 3.4:1 on surface (control edges) */
+
+  /* Text */
+  --color-text: #0b0b0b;
+  --color-text-secondary: #52514e;
+  --color-text-muted: #6b6a66;
+  --color-text-inverse: #ffffff;
+
+  /* Brand / interactive (blue ramp) */
+  --color-primary: #1c5cab;
+  --color-primary-hover: #184f95;
+  --color-primary-soft: #e6effb;
+  --color-focus: #2a78d6;
+  --color-link: #1c5cab;
+
+  /* Status (always paired with text or an icon, never colour alone) */
+  --color-success: #12704a;
+  --color-success-soft: #e3f4ec;
+  --color-warning: #8a5a00;
+  --color-warning-soft: #fdf1d8;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdeceb;
+  --color-rating: #d98a1c;
+  --color-highlight: #fff1b8;
+  --color-overlay: rgb(16 16 15 / 45%);
+
+  /* Typography */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Spacing (4px grid) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Shape and depth */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(16 16 15 / 6%);
+  --shadow-md: 0 4px 12px rgb(16 16 15 / 8%);
+  --shadow-lg: 0 12px 32px rgb(16 16 15 / 14%);
+
+  /* Layout */
+  --page-max-width: 1200px;
+  --page-gutter: var(--space-4);
+  --header-height: 64px;
+  --control-height: 44px; /* also the minimum touch target */
+  --touch-target: 36px; /* small controls (chips, toggles); 44px on touch screens */
+
+  --transition-fast: 120ms ease;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-gutter: var(--space-6);
+  }
+}
+
+/* Touch screens: every control at least 44px high. */
+@media (pointer: coarse) {
+  :root {
+    --touch-target: var(--control-height);
+  }
+}
+
+/*
+ * Dark theme. Used when the operating system prefers dark (unless the visitor chose the
+ * light theme with the header toggle), or when the visitor chose dark. The toggle sets
+ * <html data-theme="light|dark">; with no choice stored the attribute is absent.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --color-page: #121211;
+    --color-surface: #1a1a19;
+    --color-surface-muted: #232321;
+    --color-border: #2e2d2b;
+    --color-border-strong: #7a7972; /* 3.9:1 on surface (control edges) */
+
+    --color-text: #f0efec;
+    --color-text-secondary: #c3c2b7;
+    --color-text-muted: #9c9b92;
+    --color-text-inverse: #ffffff;
+
+    --color-primary: #2266bd; /* button fill: 5.7:1 with white text */
+    --color-primary-hover: #1d5aa8;
+    --color-primary-soft: #16263b;
+    --color-focus: #6da7ec;
+    --color-link: #86b6ef;
+
+    --color-success: #5fcf9c;
+    --color-success-soft: #12271e;
+    --color-warning: #f0b94a;
+    --color-warning-soft: #2b2210;
+    --color-danger: #f28b82;
+    --color-danger-soft: #2e1614;
+    --color-rating: #f0b94a;
+    --color-highlight: #4a3c0e;
+    --color-overlay: rgb(0 0 0 / 60%);
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+    --shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-page: #121211;
+  --color-surface: #1a1a19;
+  --color-surface-muted: #232321;
+  --color-border: #2e2d2b;
+  --color-border-strong: #7a7972; /* 3.9:1 on surface (control edges) */
+
+  --color-text: #f0efec;
+  --color-text-secondary: #c3c2b7;
+  --color-text-muted: #9c9b92;
+  --color-text-inverse: #ffffff;
+
+  --color-primary: #2266bd; /* button fill: 5.7:1 with white text */
+  --color-primary-hover: #1d5aa8;
+  --color-primary-soft: #16263b;
+  --color-focus: #6da7ec;
+  --color-link: #86b6ef;
+
+  --color-success: #5fcf9c;
+  --color-success-soft: #12271e;
+  --color-warning: #f0b94a;
+  --color-warning-soft: #2b2210;
+  --color-danger: #f28b82;
+  --color-danger-soft: #2e1614;
+  --color-rating: #f0b94a;
+  --color-highlight: #4a3c0e;
+  --color-overlay: rgb(0 0 0 / 60%);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+  }
+}
