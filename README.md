@@ -83,8 +83,8 @@ The easiest way to run everything. You need **Git** and **Docker Desktop**, and 
 Desktop must be **running**.
 
 ```powershell
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/janejbraganza/Amazon-Product-Search-Engine.git
+cd Amazon-Product-Search-Engine
 docker compose --profile app up --build -d
 ```
 
